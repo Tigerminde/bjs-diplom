@@ -89,66 +89,65 @@ function main() {
         password: '123456',
     })
     Tigran.createUser((err, data) => {
-            if (err) {
-                console.error('Error during creating user Tigran')
-            } else {
-                console.log(`Tigran is created!`);
-                Tigran.performLogin((err, data) => {
+        if (err) {
+            console.error('Error during creating user Tigran')
+        } else {
+            console.log(`Tigran is created!`);
+            Tigran.performLogin((err, data) => {
+                if (err) {
+                    console.error('Error during authorizing user Tigran')
+                } else {
+                    console.log(`Tigran is authorized!`);
+                    Tigran.addMoney({
+                        currency: 'EUR',
+                        amount: 500000
+                    }, (err, data) => {
                         if (err) {
-                            console.error('Error during authorizing user Tigran')
+                            console.error('Error during adding money to Tigran');
                         } else {
-                            console.log(`Tigran is authorized!`);
-                            Tigran.addMoney({
-                                    currency: 'EUR',
-                                    amount: 500000
-                                }, (err, data) => {
-                                    if (err) {
-                                        console.error('Error during adding money to Tigran');
-                                    } else {
-                                        console.log(`Added 500000 euros to Tigran`);
-                                        Tigran.convertMoney({
-                                                fromCurrency: 'EUR',
-                                                targetCurrency: 'NETCOIN',
-                                                targetAmount: 36000
+                            console.log(`Added 500000 euros to Tigran`);
+                            Tigran.convertMoney({
+                                fromCurrency: 'EUR',
+                                targetCurrency: 'NETCOIN',
+                                targetAmount: 36000
+                            }, (err, data) => {
+                                if (err) {
+                                    console.error('Error during converting money for Tigran');
+                                } else {
+                                    console.log(`Converted money`);
+                                    const Ivan = new Profile({
+                                        username: 'vanya',
+                                        name: {
+                                            firstName: 'ivan',
+                                            lastName: 'chernyshevv'
+                                        },
+                                        password: 'ivanpass',
+                                    })
+                                    Ivan.createUser((err, data) => {
+                                        if (err) {
+                                            console.error('Error during creating user Ivan');
+                                        } else {
+                                            console.log(`Ivan is created!`);
+                                            Ivan.transferMoney({
+                                                to: 'vanya',
+                                                amount: 36000
                                             }, (err, data) => {
                                                 if (err) {
-                                                    console.error('Error during converting money for Tigran');
+                                                    console.error('Error during transfering netcoins to Ivan');
                                                 } else {
-                                                    console.log(`Converted money`);
-                                                    const Ivan = new Profile({
-                                                        username: 'vanya',
-                                                        name: {
-                                                            firstName: 'ivan',
-                                                            lastName: 'chernyshevv'
-                                                        },
-                                                        password: 'ivanpass',
-                                                    })
-                                                    Ivan.createUser((err, data) => {
-                                                        if (err) {
-                                                            console.error('Error during creating user Ivan');
-                                                        } else {
-                                                            console.log(`Ivan is created!`);
-                                                            Ivan.transferMoney({
-                                                                to: 'vanya',
-                                                                amount: 36000
-                                                            }, (err, data) => {
-                                                                if (err) {
-                                                                    console.error('Error during transfering netcoins to Ivan');
-                                                                } else {
-                                                                    console.log(`Transfered 36000 netkoins to Ivan`);
-                                                                }
-                                                            });
-                                                        }
-                                                    });
-                                                });
+                                                    console.log(`Transfered 36000 netkoins to Ivan`);
+                                                }
+                                            });
                                         }
                                     });
-                            }
-                        });
+                                }
+                            });
+
+                        }
+                    });
                 }
             });
-    }
-});
-
+        }
+    });
 }
 main();
